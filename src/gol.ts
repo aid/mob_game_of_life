@@ -100,10 +100,10 @@ export class State {
         return result.join('\n');
     }
 
-    public inspect(depth, opts) : string {
+    [require('util').inspect.custom]() {
         return this.toString();
     }
-    
+
     public get(x: number, y:number) : boolean {
         if ( x >= 0 && y >= 0 && x < this.width && y < this.height) {
             return this.data[y][x];
@@ -196,6 +196,10 @@ export class World {
 
     public toString() : string {
         return this.state.toString();
+    }
+
+    [require('util').inspect.custom]() {
+        return this.toString();
     }
 
     public get(x: number, y:number) : boolean {
