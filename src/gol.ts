@@ -21,7 +21,7 @@ export class State {
         return new Array<Array<boolean>>(this.height).fill(null).
             map(x => new Array<boolean>(this.width).fill(false) );
 
-        // The very first code used to attempt by AJB to create
+        // The very first code used by AJB to attempt to create
         // a two dimensional array was:
         //
         //      return new Array(this.height, this.width)
@@ -134,6 +134,7 @@ export class State {
         this.setAllDead();
 
         for (let live = 0 ; live < liveCount ; live ++) {
+            done = false;
             do {
                 x = Math.round(Math.random() * this.width);
                 y = Math.round(Math.random() * this.height);
