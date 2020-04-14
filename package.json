@@ -1,0 +1,14 @@
+{
+  "name": "mob",
+  "version": "1.0.0",
+  "description": "Game of Life, Mob Style",
+  "main": "src/gol.ts",
+  "scripts": {
+    "test": "ts-node /usr/local/bin/jasmine  --config=spec/support/jasmine.json"
+  },
+  "author": "The Mob",
+  "license": "MIT",
+  "dependencies": {
+    "@types/jasmine": "^3.5.10"
+  }
+}
