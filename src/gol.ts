@@ -18,14 +18,83 @@ export class State {
     }
 
     private createEmptyState(): boolean[][] {
-        let result: boolean[][] = new Array(this.height);
-        for (let y = 0 ; y < this.height ; y++) {
-            result[y] = new Array(this.width);
-            for (let x = 0 ; x < this.width ; x++ ) {
-                result[y][x] = false;
-            }
-        }
-        return result;
+        return new Array<Array<boolean>>(this.height).fill(null).
+            map(x => new Array<boolean>(this.width).fill(false) );
+
+        // The very first code used to attempt by AJB to create
+        // a two dimensional array was:
+        //
+        //      return new Array(this.height, this.width)
+        //
+        // Instead, this creates an single-dimension array containing
+        // two numbers - the width & the height.
+        //
+        // The following is the following BROKEN code created by AJB
+        // during the Mob session...
+        //
+        //      return new Array(this.height).fill(
+        //          new Array(this.width).fill(false))
+        //
+        // The above code causes the SAME array instance
+        // to be added to the outer array - resulting
+        // in a change to one column entry to be a change
+        // to all column entries.
+        //
+        // This behaviour - using the above broken code - is 
+        // demonstrated here:
+        //
+        //      > let w = new World(10,10);
+        //      > console.log(w);
+        //      +----------+
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      |          |
+        //      +----------+
+        //      > w.setLive(3,3);
+        //      > console.log(w);
+        //      +----------+
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      |   #      |
+        //      +----------+
+        //              
+        // The new (good) code calls a lambda within the
+        // map statement to ensure that a new Array instance is
+        // created for each element in the outer Array.
+        //
+        // Note that the .fill(null) is required on the outer array
+        // as .map is not called for any undefined elements 
+        // (the default type set to elements in an Array created by 
+        // size).  As such, we set momentarily set these eelments to
+        // null ensure .map is called on each of these elements.
+        // 
+        // A more manual way that was previously used to 
+        // resolve the above issue - the following
+        // code works fine; but is more verbose than
+        // the solution given in this function:
+        //
+        //      let result: boolean[][] = new Array(this.height);
+        //      for (let y = 0 ; y < this.height ; y++) {
+        //          result[y] = new Array(this.width);
+        //          for (let x = 0 ; x < this.width ; x++ ) {
+        //              result[y][x] = false;
+        //          }
+        //      }
+        //      return result;
     }
 
     public setFromArrayOfStrings(width: number, height: number, givenState: string[]) : void {
